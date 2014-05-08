@@ -201,7 +201,8 @@ public class AugmentedSolrRecordRetrieverImpl implements AugmentedSolrRecordRetr
 	@Override
 	public void sendServiceStart(SolrRecord solrRecord) {
 		String location = solrRecord.getLocation();
-
+		//@asish: TODO
+		logger.info("Location: "+location);
 		if (LocationFieldUtils.hasServiceStart(location)){
 			String serviceStart = "";
 			InputStream is = null;
