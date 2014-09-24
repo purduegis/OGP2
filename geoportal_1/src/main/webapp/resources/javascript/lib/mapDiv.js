@@ -1610,19 +1610,19 @@ Road - Roads without additional imagery.	*/
 //	thanks to Allen Lin, U of MN
 	this.addArcGISRestLayer = function (layerModel) {
 		//won't actually do anything, since noMagic is true and transparent is true
-		var format;
-		if (layerModel.isVector){
-			format = "image/png";
-		} else {
-			format = "image/jpeg";
-		}
+		var format = "image/jpeg";
+		//if (layerModel.isVector){
+		//	format = "image/png";
+		//} else {
+		//	format = "image/jpeg";
+		//}
 
 //		if this is a raster layer, we should use jpeg format, png for vector (per geoserver docs)
 		var newLayer = new OpenLayers.Layer.ArcGIS93Rest( 
-			layerModel.get("LayerDisplayName"),
+			"test",
 			layerModel.get("parsedLocation").ArcGISRest,
 				{
-					layers: "show:" + layerModel.get("Name"),
+					layers: "show:" + "test",
 					transparent: true
 				},
 				{
@@ -1637,7 +1637,8 @@ Road - Roads without additional imagery.	*/
 		newLayer.events.register('loadend', newLayer, function() {jQuery(document).trigger("hideLoadIndicator");});
 		var that = this;
 		//we do a cursory check to see if the layer exists before we add it
-		jQuery("body").bind(newLayer.ogpLayerId + 'Exists', function(){that.addLayer(newLayer);});
+		that.addLayer(newLayer);
+		//jQuery("body").bind(newLayer.ogpLayerId + 'Exists', function(){that.addLayer(newLayer);});
 		this.layerExists(layerModel);
 	};
 
@@ -1777,6 +1778,7 @@ Road - Roads without additional imagery.	*/
 	};
 
 	this.hideLayer = function(layerId){
+		console.log("Layer ID: "+layerId);
 		var layers = this.getLayersBy("ogpLayerId", layerId);
 		console.log("hiding layer");
 		console.log(layers);
@@ -2079,12 +2081,18 @@ Road - Roads without additional imagery.	*/
 	
 	this.previewLayerOn = function(layerId){
 		//find preview method
+		//TODO @asish
+		console.log("LayerId: "+layerId);
+		//TODO @asish
 
 		var currModel = this.previewed.get(layerId);
 		if (typeof currModel == "undefined"){
 			throw new Error("Layer['" + layerId + "'] not found in PreviewedLayers collection.");
 		}
 		
+		//TODO @asish
+		var loc=currModel.get("Location");
+		console.log("Location: "+loc);
 		var location = jQuery.parseJSON(currModel.get("Location"));
 		currModel.set({parsedLocation: location}); //perhaps this should happen on model add
 		var previewHandler = null;
